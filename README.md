@@ -32,7 +32,7 @@
 
 - User Story #13: My tooltip should have a data-date property that corresponds to the data-date of the active area.
 
-[Back To Top](#all-users-stories)
+[Back To Top](#all-user-stories)
 
 ## Scatter Plot
 
@@ -66,7 +66,7 @@
 
 - User Story #15: My tooltip should have a data-year property that corresponds to the data-xvalue of the active area.
 
-[Back To Top](#all-users-stories)
+[Back To Top](#all-user-stories)
 
 ## Heat Map
 
@@ -104,7 +104,7 @@
 
 - User Story #17: My tooltip should have a data-year property that corresponds to the data-year of the active area.
 
-[Back To Top](#all-users-stories)
+[Back To Top](#all-user-stories)
 
 ## Choropleth Map
 
@@ -130,7 +130,7 @@
 
 - User Story #11: My tooltip should have a data-education property that corresponds to the data-education of the active area.
 
-[Back To Top](#all-users-stories)
+[Back To Top](#all-user-stories)
 
 ## Tree Map
 
@@ -156,4 +156,4 @@
 
 - User Story #11: My tooltip should have a data-value property that corresponds to the data-value of the active area.
 
-[Back To Top](#all-users-stories)
+[Back To Top](#all-user-stories)
