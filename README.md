@@ -32,6 +32,8 @@
 
 - User Story #13: My tooltip should have a data-date property that corresponds to the data-date of the active area.
 
+[Back To Top](##all-users-stories)
+
 ## Scatter Plot
 
 - User Story #1: I can see a title element that has a corresponding id="title".
