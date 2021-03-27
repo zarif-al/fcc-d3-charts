@@ -66,6 +66,8 @@
 
 - User Story #15: My tooltip should have a data-year property that corresponds to the data-xvalue of the active area.
 
+[Back To Top](#all-users-stories)
+
 ## Heat Map
 
 - User Story #1: My heat map should have a title with a corresponding id="title".
@@ -102,6 +104,8 @@
 
 - User Story #17: My tooltip should have a data-year property that corresponds to the data-year of the active area.
 
+[Back To Top](#all-users-stories)
+
 ## Choropleth Map
 
 - User Story #1: My choropleth should have a title with a corresponding id="title".
@@ -126,6 +130,8 @@
 
 - User Story #11: My tooltip should have a data-education property that corresponds to the data-education of the active area.
 
+[Back To Top](#all-users-stories)
+
 ## Tree Map
 
 - User Story #1: My tree map should have a title with a corresponding id="title".
@@ -149,3 +155,5 @@
 - User Story #10: I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area.
 
 - User Story #11: My tooltip should have a data-value property that corresponds to the data-value of the active area.
+
+[Back To Top](#all-users-stories)
