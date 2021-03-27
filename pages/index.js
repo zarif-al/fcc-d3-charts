@@ -1,65 +1,195 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { useEffect, useState } from "react";
+import {
+  select,
+  scaleLinear,
+  min,
+  max,
+  scaleTime,
+  axisLeft,
+  axisBottom,
+} from "d3";
+export default function Home({ data }) {
+  const dateShortner = (date) => {
+    date = new Date(date);
+    if (date.getMonth() == 0) {
+      return date.getFullYear() + " Q1";
+      //Q1
+    } else if (date.getMonth() == 3) {
+      return date.getFullYear() + " Q2";
+      //Q2
+    } else if (date.getMonth() == 6) {
+      return date.getFullYear() + " Q3";
+      //Q3
+    } else {
+      return date.getFullYear() + " Q4";
+      //Q4
+    }
+  };
 
-export default function Home() {
+  useEffect(() => {
+    //Svg Height & Width
+    const svgHeight = 460;
+    const svgWidth = 900;
+    //Graph Margins
+    const margin = {
+      top: 50,
+      right: 20,
+      bottom: 60,
+      left: 80,
+    };
+    //Graph Height & Width
+    const innerHeight = svgHeight - margin.top - margin.bottom;
+    const innerWidth = svgWidth - margin.left - margin.right;
+
+    //SVG
+    let svg = select(".chart").append("svg");
+    svg.style("height", svgHeight).style("width", svgWidth);
+    //X-Values
+    const xValue = (d) => new Date(d[0]);
+    //Y-Values
+    const yValue = (d) => d[1];
+    //increasing the upperbound because bars exceed xScale otherwise
+    let maxDate = max(data, xValue);
+    maxDate = maxDate.setMonth(maxDate.getMonth() + 4);
+    //X-Scale
+    const xScale = scaleTime()
+      .domain([min(data, xValue), maxDate])
+      .range([0, innerWidth]);
+    //Y-Scale
+    const yScale = scaleLinear()
+      .domain([0, max(data, yValue)])
+      .range([innerHeight, 0]);
+    //Chart Title
+    const title = "United States GDP";
+    //Instantiating Axes
+    //X-Axis
+    const xLabel = "Year";
+    const xAxisInit = axisBottom(xScale);
+    //Y-Axis
+    const yLabel = "Gross Domestic Product";
+    const yAxisInit = axisLeft(yScale);
+    //yAxisInit.tickFormat((number) => format(".2s")(number).replace("G", "B"));
+    yAxisInit.tickSize(-innerWidth);
+    yAxisInit.tickSizeOuter(0);
+    //Creating a group to be the chart
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    //Appending Y-Axis to g
+    const yAxis = g.append("g").call(yAxisInit);
+    yAxis.selectAll("text").style("font-size", "1.2em");
+    //Y-Axis Label
+    yAxis
+      .attr("id", "y-axis")
+      .append("text")
+      .text(yLabel)
+      .attr("y", -55)
+      .attr("x", -innerHeight / 2)
+      .attr("transform", "rotate(-90)")
+      .attr("text-anchor", "middle")
+      .attr("font-size", "1.5em")
+      .attr("fill", "black");
+    //Appending X-Axis to g
+    const xAxis = g.append("g").call(xAxisInit);
+    xAxis
+      .attr("id", "x-axis")
+      .attr("transform", `translate(0, ${innerHeight})`)
+      .selectAll("text")
+      .style("font-size", "1.2em");
+    //X-Axis Label
+    xAxis
+      .append("text")
+      .text(xLabel)
+      .attr("y", 50)
+      .attr("x", innerWidth / 2)
+      .attr("font-size", "1.5em")
+      .attr("fill", "black");
+    /*
+      TO REMOVE TICKS AND ELEMENTS. BECAUSE OF
+      FONT TILTING I WILL NEED TO APPLY THIS SEPERATELY.
+      .select(".domain")
+        .remove()
+        OR
+      .selectAll(".domain, .tick line").remove()
+      xAxis.select(".domain").remove();
+      */
+    //ToolTip
+
+    var tooltip = select(".chart")
+      .append("div")
+      .attr("id", "tooltip")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+      .style("font-size", "18px")
+      .style("text-align", "center")
+      .style("width", "150px")
+      .style("heigth", "50px")
+      .style("padding", "2px")
+      .style("opacity", 0);
+    //Appending Bars to g
+    const bars = g
+      .selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("y", (d) => yScale(yValue(d)))
+      .attr("x", (d) => xScale(xValue(d)))
+      .attr("width", innerWidth / 275)
+      .attr("height", (d) => innerHeight - yScale(yValue(d)))
+      .attr("fill", "steelBlue");
+    bars.attr("data-date", (d) => d[0]).attr("data-gdp", (d) => d[1]);
+    bars
+      .on("mouseover", function (event, d) {
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        const dateInfo = dateShortner(d[0]);
+        tooltip
+          .html(
+            dateInfo +
+              "<br>" +
+              "$" +
+              d[1].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,") +
+              " Billion"
+          )
+          .attr("data-date", d[0])
+          .style("left", event.pageX - 50 + "px")
+          .style("top", event.pageY - 100 + "px")
+          .style("transform", "translateX(60px)");
+      })
+      .on("mouseout", () => {
+        tooltip.transition().duration(200).style("opacity", 0);
+      });
+
+    //Title
+    g.append("text")
+      .attr("id", "title")
+      .text(title)
+      .attr("y", -15)
+      .attr("x", svgWidth / 2)
+      .attr("text-anchor", "end")
+      .attr("font-size", "1.5em");
+
+    return () => {
+      svg = svg.remove();
+      tooltip = tooltip.remove();
+    };
+  }, []);
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+    <div>
+      <div className="chart"></div>
     </div>
+  );
+}
+
+export async function getStaticProps(context) {
+  const resource = await fetch(
+    "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json"
   )
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    });
+
+  return {
+    props: { data: resource.data },
+  };
 }

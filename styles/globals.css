@@ -14,3 +14,29 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.chart {
+  background-color: white;
+  box-shadow: 1px 1px 10px;
+  transition: all 2000ms;
+}
+
+.bar:hover {
+  fill: white;
+}
+
+#tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background: lightsteelblue;
+  box-shadow: 1px 1px 10px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.cell:hover {
+  stroke-width: 1;
+  stroke: black;
+}
