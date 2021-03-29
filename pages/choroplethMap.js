@@ -14,9 +14,10 @@ import {
   format,
 } from "d3";
 import { feature } from "topojson-client";
+import { motion } from "framer-motion";
 export default function choroplethMap({ topology, eduData }) {
   //Svg Height & Width
-  const svgHeight = 560;
+  const svgHeight = 660;
   const svgWidth = 960;
   //Titles
   const title = "United States Educational Attainment";
@@ -37,21 +38,18 @@ export default function choroplethMap({ topology, eduData }) {
     return geoTransform({
       point: function (x, y) {
         this.stream.point(
-          (x - width / 2) * scaleFactor + width / 2,
+          (x - width / 1.5) * scaleFactor + width / 1.5,
           /*       y * scaleFactor */
-          (y - height / 1.5) * scaleFactor + height / 1.5
+          (y - height / 1) * scaleFactor + height / 1
         );
       },
     });
   }
-  const pathGen = geoPath().projection(scale(0.75, innerWidth, innerHeight));
+  const pathGen = geoPath().projection(scale(0.8, innerWidth, innerHeight));
   useEffect(() => {
     //SVG
     let svg = select(".chart").append("svg");
-    svg
-      .style("background-color", "lightgrey")
-      .style("height", svgHeight)
-      .style("width", svgWidth);
+    svg.style("height", svgHeight).style("width", svgWidth);
     //need to create a group for zoom to work properly.
     const g = svg.append("g");
     //Zoom
@@ -67,8 +65,6 @@ export default function choroplethMap({ topology, eduData }) {
     var legendWidth = 400;
     const minEdu = min(eduData, (d) => d.bachelorsOrHigher);
     const maxEdu = max(eduData, (d) => d.bachelorsOrHigher);
-    console.log(minEdu);
-    console.log(maxEdu);
     let thresholdDomain = () => {
       var array = [];
       var step = (maxEdu - minEdu) / legendColors.length;
@@ -78,10 +74,6 @@ export default function choroplethMap({ topology, eduData }) {
       }
       return array;
     };
-    /*    console.log(thresholdDomain());
-    console.log(
-      range(minEdu, maxEdu, (maxEdu - minEdu) / schemeOranges[8].length)
-    ); */
     var legendThreshold = scaleThreshold()
       .domain(thresholdDomain())
       .range(legendColors);
@@ -97,7 +89,7 @@ export default function choroplethMap({ topology, eduData }) {
     const legendGroup = svg
       .append("g")
       .attr("id", "legend")
-      .attr("transform", `translate(${innerWidth / 1.5}, 80)`);
+      .attr("transform", `translate(${innerWidth / 1.5}, 95)`);
     //Legend Bars
     legendGroup
       .selectAll("rect")
@@ -200,9 +192,19 @@ export default function choroplethMap({ topology, eduData }) {
     };
   }, []);
   return (
-    <div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0, x: -100 },
+        visible: { opacity: 1, x: 0, transition: { duration: 1 } },
+        exit: { opacity: 0, x: 100, transition: { duration: 1 } },
+      }}
+      style={{ width: 960, height: 660 }}
+    >
       <div className="chart"></div>
-    </div>
+    </motion.div>
   );
 }
 

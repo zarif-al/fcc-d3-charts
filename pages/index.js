@@ -8,6 +8,7 @@ import {
   axisLeft,
   axisBottom,
 } from "d3";
+import { motion } from "framer-motion";
 export default function Home({ data }) {
   const dateShortner = (date) => {
     date = new Date(date);
@@ -28,8 +29,8 @@ export default function Home({ data }) {
 
   useEffect(() => {
     //Svg Height & Width
-    const svgHeight = 460;
-    const svgWidth = 900;
+    const svgHeight = 660;
+    const svgWidth = 1000;
     //Graph Margins
     const margin = {
       top: 50,
@@ -174,9 +175,18 @@ export default function Home({ data }) {
     };
   }, []);
   return (
-    <div>
-      <div className="chart"></div>
-    </div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0, x: -100 },
+        visible: { opacity: 1, x: 0, transition: { duration: 1 } },
+        exit: { opacity: 0, x: 100, transition: { duration: 1 } },
+      }}
+      className="chart"
+      style={{ width: 1000, height: 660 }}
+    ></motion.div>
   );
 }
 

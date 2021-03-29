@@ -18,7 +18,11 @@ a {
 .chart {
   background-color: white;
   box-shadow: 1px 1px 10px;
-  transition: all 2000ms;
+  transition: background-color 1000ms;
+}
+
+.navbar {
+  box-shadow: 1px 1px 10px;
 }
 
 .bar:hover {
