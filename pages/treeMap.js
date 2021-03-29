@@ -20,7 +20,7 @@ export default function treeMap({
   }
   if (data.name === "Kickstarter") {
     title = "Kickstarter Projects Data";
-    subtitle = `Top ${sum} Kickstarter Projects Grouped by Product Category`;
+    subtitle = `Top ${sum} Most Funded Kickstarter Projects Grouped by Product Category`;
   }
   if (data.name === "Movies") {
     title = "Movie Data";
