@@ -15,7 +15,7 @@ import {
   scaleOrdinal,
   scaleThreshold,
 } from "d3";
-
+import { motion } from "framer-motion";
 export default function heatMap({ data, baseTemp }) {
   useEffect(() => {
     //Graph Margins
@@ -35,8 +35,8 @@ export default function heatMap({ data, baseTemp }) {
       baseTemp +
       "℃";
     //Svg Height & Width
-    const svgHeight = 460;
-    const svgWidth = 900;
+    const svgHeight = 560;
+    const svgWidth = 1000;
     //Graph Height & Width
     const innerHeight = svgHeight - margin.top - margin.bottom;
     const innerWidth = svgWidth - margin.left - margin.right;
@@ -262,13 +262,23 @@ export default function heatMap({ data, baseTemp }) {
       .attr("font-size", "1em");
 
     return () => {
-      svg = svg.remove();
+      /*  svg = svg.remove(); */
     };
   }, []);
   return (
-    <div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0, x: -100 },
+        visible: { opacity: 1, x: 0, transition: { duration: 1 } },
+        exit: { opacity: 0, x: 100, transition: { duration: 1 } },
+      }}
+      style={{ height: 660, width: 1000 }}
+    >
       <div className="chart"></div>
-    </div>
+    </motion.div>
   );
 }
 

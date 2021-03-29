@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { select, scaleOrdinal, hierarchy, treemap } from "d3";
 import Button from "react-bootstrap/Button";
+import { motion } from "framer-motion";
 export default function treeMap({
   videoGameSales,
   kickStartePledges,
@@ -253,7 +254,17 @@ export default function treeMap({
     };
   }, [data]);
   return (
-    <div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0, x: -100 },
+        visible: { opacity: 1, x: 0, transition: { duration: 1 } },
+        exit: { opacity: 0, x: 100, transition: { duration: 1 } },
+      }}
+      style={{ height: 660 }}
+    >
       <div className="chart" style={{ display: "flex" }}>
         <div
           className="options"
@@ -288,7 +299,7 @@ export default function treeMap({
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
