@@ -30,7 +30,7 @@ export default function Home({ data }) {
   useEffect(() => {
     //Svg Height & Width
     const svgHeight = 660;
-    const svgWidth = 1000;
+    const svgWidth = 1200;
     //Graph Margins
     const margin = {
       top: 50,
@@ -185,7 +185,7 @@ export default function Home({ data }) {
         exit: { opacity: 0, x: 100, transition: { duration: 1 } },
       }}
       className="chart"
-      style={{ width: 1000, height: 660 }}
+      style={{ width: 1200, height: 660 }}
     ></motion.div>
   );
 }

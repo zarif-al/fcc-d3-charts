@@ -35,7 +35,7 @@ export default function ScatterPlot({ data }) {
     const subtitle = "35 Fastest times up Alpe d'Huez";
     //Svg Height & Width
     const svgHeight = 660;
-    const svgWidth = 1000;
+    const svgWidth = 1200;
     //Graph Height & Width
     const innerHeight = svgHeight - margin.top - margin.bottom;
     const innerWidth = svgWidth - margin.left - margin.right;
@@ -209,7 +209,7 @@ export default function ScatterPlot({ data }) {
         visible: { opacity: 1, x: 0, transition: { duration: 1 } },
         exit: { opacity: 0, x: 100, transition: { duration: 1 } },
       }}
-      style={{ width: 1000, height: 660 }}
+      style={{ width: 1200, height: 660 }}
     >
       <div className="chart"></div>
     </motion.div>
